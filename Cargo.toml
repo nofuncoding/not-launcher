@@ -1,0 +1,14 @@
+[workspace]
+members = ["nl-core", "nl-ui"]
+resolver = "2"
+
+[workspace.package]
+license = "GPL-3.0 or later"
+authors = ["NoFun"]
+version = "0.1.0-dev.0"
+
+[workspace.dependencies]
+thiserror = "1.0"
+anyhow = "1.0"
+log = "0.4"
+serde = { version = "1.0", features = ["derive"] }
