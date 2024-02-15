@@ -1,24 +1,13 @@
-// Don't display console on windows
-#![windows_subsystem = "windows"]
+// Prevent console window from showing up on Windows
+// #![windows_subsystem = "windows"]
 
-use data::AppState;
-use druid::AppLauncher;
+use iced::Sandbox;
 
-mod ui;
-mod data;
-mod cmd;
-mod delegate;
+mod config;
+mod app;
 
-use crate::data::Config;
-
-fn main(){
+fn main() -> iced::Result {
     env_logger::init();
 
-    let config = Config::load().unwrap_or_default();
-    let state = AppState::default_with_config(config);
-
-    let window = ui::main_window(&state.config);
-    AppLauncher::with_window(window)
-        .launch(state)
-        .expect("Failed to launch app");
+    app::Main::run(iced::Settings::default())
 }

@@ -2,7 +2,6 @@ use std::default;
 use std::io::{Read, Write, BufReader, BufWriter};
 use std::{env, fs::{File, OpenOptions}, path::PathBuf};
 
-use druid::{Data, Lens, Size};
 use serde::{Deserialize, Serialize};
 
 use nl_core::cache::mkdir_if_not_exists;
@@ -10,15 +9,17 @@ use nl_core::cache::mkdir_if_not_exists;
 const APP_NAME: &str = "Not Launcher";
 const CONFIG_FILENAME: &str = "config.toml";
 
-#[derive(Clone, Debug, Data, Lens, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(default)]
 pub struct Config {
-
+    theme: String,
 }
 
 impl Default for Config {
     fn default() -> Self {
-        Config {}
+        Config {
+            theme: iced::Theme::Light.to_string(),
+        }
     }
 }
 
@@ -70,19 +71,45 @@ impl Config {
     }
 }
 
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Data, Deserialize, Serialize)]
+impl Config {
+    pub fn theme(&self) -> iced::Theme {
+        let theme = self.theme.as_str();
+        match theme {
+            "Light" => iced::Theme::Light,
+            "Dark" => iced::Theme::Dark,
+            "Dracula" => iced::Theme::Dracula,
+            "Nord" => iced::Theme::Nord,
+            "Solarized Light" => iced::Theme::SolarizedLight,
+            "Solarized Dark" => iced::Theme::SolarizedDark,
+            "Gruvbox Light" => iced::Theme::GruvboxLight,
+            "Gruvbox Dark" => iced::Theme::GruvboxDark,
+            "Catppuccin Latte" => iced::Theme::CatppuccinLatte,
+            "Catppuccin Frappé" => iced::Theme::CatppuccinFrappe,
+            "Catppuccin Macchiato" => iced::Theme::CatppuccinMacchiato,
+            "Catppuccin Mocha" => iced::Theme::CatppuccinMocha,
+            "Tokyo Night" => iced::Theme::TokyoNight,
+            "Tokyo Night Storm" => iced::Theme::TokyoNightStorm,
+            "Tokyo Night Light" => iced::Theme::TokyoNightLight,
+            "Kanagawa Wave" => iced::Theme::KanagawaWave,
+            "Kanagawa Dragon" => iced::Theme::KanagawaDragon,
+            "Kanagawa Lotus" => iced::Theme::KanagawaLotus,
+            "Moonfly" => iced::Theme::Moonfly,
+            "Nightfly" => iced::Theme::Nightfly,
+            "Oxocarbon" => iced::Theme::Oxocarbon,
+            _ => iced::Theme::Light,
+        }
+    }
+
+    pub fn set_theme(&mut self, theme: &iced::Theme) {
+        self.theme = theme.to_string();
+    }
+}
+
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[derive(Default)]
 pub enum MinecraftMirror {
     #[default]
     Mojang,
     BmclApi,
     Mcbbs,
-}
-
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Data, Deserialize, Serialize)]
-#[derive(Default)]
-pub enum Theme {
-    #[default]
-    Light,
-    Dark,
 }
