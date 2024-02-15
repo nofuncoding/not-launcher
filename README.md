@@ -2,7 +2,10 @@
 
 Not Minecraft Launcher is not a Minecraft launcher!
 
-It based on [Rust](https://www.rust-lang.org/)
+> [!CAUTION]
+> Not Minecraft Launcher is in a very early stage currently.
+
+It based on [Rust](https://www.rust-lang.org/).
 
 ## License
 
